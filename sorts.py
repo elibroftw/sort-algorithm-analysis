@@ -1,25 +1,25 @@
-def insertion_sort(a):
-    for index in range(1, len(a)):
-        current_value = a[index]
-        position = index
-        while position > 0 and a[position - 1] > current_value:
-            a[position] = a[position - 1]
+def insertion_sort(array):
+    for i in range(1, len(array)):
+        current_value = array[i]
+        position = i
+        while position > 0 and array[position - 1] > current_value:
+            array[position] = array[position - 1]
             position = position - 1
-        a[position] = current_value
-    return a
+        array[position] = current_value
+    return array
 
 
-def selection_sort(a):
-    for i in range(len(a) - 1, 0, -1):
+def selection_sort(array):
+    for i in range(len(array) - 1, 0, -1):
         position_of_max = 0
         for location in range(1, i + 1):
-            if a[location] > a[position_of_max]:
+            if array[location] > array[position_of_max]:
                 position_of_max = location
 
-        temp = a[i]
-        a[i] = a[position_of_max]
-        a[position_of_max] = temp
-    return a
+        temp = array[i]
+        array[i] = array[position_of_max]
+        array[position_of_max] = temp
+    return array
 
 
 def merge_sort(array):
@@ -55,40 +55,41 @@ def merge_sort(array):
     return array
 
 
-def heapify(arr, n, i):
+def heapify(array, n, i):
     largest = i  # Initialize largest as root
     l = 2 * i + 1  # left = 2*i + 1
     r = 2 * i + 2  # right = 2*i + 2
 
     # See if left child of root exists and is
     # greater than root
-    if l < n and arr[i] < arr[l]:
+    if l < n and array[i] < array[l]:
         largest = l
 
     # See if right child of root exists and is
     # greater than root
-    if r < n and arr[largest] < arr[r]:
+    if r < n and array[largest] < array[r]:
         largest = r
 
     # Change root, if needed
     if largest != i:
-        arr[i], arr[largest] = arr[largest], arr[i]  # swap
+        array[i], array[largest] = array[largest], array[i]  # swap
 
         # Heapify the root.
-        heapify(arr, n, largest)
+        heapify(array, n, largest)
 
 
-def heap_sort(arr):
-    n = len(arr)
+def heap_sort(array):
+    n = len(array)
 
     # Build a maxheap.
     for i in range(n, -1, -1):
-        heapify(arr, n, i)
+        heapify(array, n, i)
 
     # One by one extract elements
     for i in range(n - 1, 0, -1):
-        arr[i], arr[0] = arr[0], arr[i]  # swap
-        heapify(arr, i, 0)
+        array[i], array[0] = array[0], array[i]  # swap
+        heapify(array, i, 0)
+    return array
 
 
 def quick_sort(array):
@@ -139,47 +140,28 @@ def shell_sort(array):
     return array
 
 
-def comb_sort(a):
-    gap = len(a)
+def comb_sort(array):
+    gap = len(array)
     swaps = True
     while gap > 1 or swaps:
         gap = max(1, int(gap / 1.25))  # minimum gap is 1
         swaps = False
-        for i in range(len(a) - gap):
+        for i in range(len(array) - gap):
             j = i + gap
-            if a[i] > a[j]:
-                a[i], a[j] = a[j], a[i]
+            if array[i] > array[j]:
+                array[i], array[j] = array[j], array[i]
                 swaps = True
-    return a
+    return array
 
 
-def count_sort(array):
-    # The output character array that will have sorted arr
-    output = [0 for i in range(256)]
-
-    # Create a count array to store count of inidividul
-    # characters and initialize count array as 0
-    count = [0 for i in range(256)]
-
-    # For storing the resulting answer since the
-    # string is immutable
-    ans = ["" for _ in array]
-
-    # Store count of each character
-    for i in array:
-        count[ord(i)] += 1
-
-    # Change count[i] so that count[i] now contains actual
-    # position of this character in output array
-    for i in range(256):
-        count[i] += count[i - 1]
-    # Build the output character array
-    for i in range(len(array)):
-        output[count[ord(array[i])] - 1] = array[i]
-        count[ord(array[i])] -= 1
-
-    # Copy the output array to arr, so that arr now
-    # contains sorted characters
-    for i in range(len(array)):
-        ans[i] = output[i]
-    return ans
+def counting_sort(array):
+    m = max(array) + 1
+    count = [0] * m  # init with zeros
+    for a in array:
+        count[a] += 1  # count occurrences
+    i = 0
+    for a in range(m):  # emit
+        for c in range(count[a]):  # - emit 'count[a]' copies of 'a'
+            array[i] = a
+            i += 1
+    return array
