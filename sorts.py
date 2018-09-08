@@ -56,38 +56,25 @@ def merge_sort(array):
 
 
 def heapify(array, n, i):
-    largest = i  # Initialize largest as root
-    l = 2 * i + 1  # left = 2*i + 1
-    r = 2 * i + 2  # right = 2*i + 2
+    largest = i
+    left = 2 * i + 1
+    r = 2 * i + 2
 
-    # See if left child of root exists and is
-    # greater than root
-    if l < n and array[i] < array[l]:
-        largest = l
-
-    # See if right child of root exists and is
-    # greater than root
-    if r < n and array[largest] < array[r]:
-        largest = r
-
-    # Change root, if needed
+    if left < n and array[i] < array[left]: largest = left
+    if r < n and array[largest] < array[r]: largest = r
     if largest != i:
-        array[i], array[largest] = array[largest], array[i]  # swap
+        array[i], array[largest] = array[largest], array[i]
 
-        # Heapify the root.
         heapify(array, n, largest)
 
 
 def heap_sort(array):
     n = len(array)
 
-    # Build a maxheap.
-    for i in range(n, -1, -1):
-        heapify(array, n, i)
+    for i in range(n, -1, -1): heapify(array, n, i)
 
-    # One by one extract elements
     for i in range(n - 1, 0, -1):
-        array[i], array[0] = array[0], array[i]  # swap
+        array[i], array[0] = array[0], array[i]
         heapify(array, i, 0)
     return array
 
@@ -100,18 +87,11 @@ def quick_sort(array):
     if len(array) > 1:
         pivot = array[0]
         for x in array:
-            if x < pivot:
-                less.append(x)
-            if x == pivot:
-                equal.append(x)
-            if x > pivot:
-                greater.append(x)
-        # Don't forget to return something!
-        return quick_sort(less) + equal + quick_sort(greater)  # Just use the + operator to join lists
-    # Note that you want equal ^^^^^ not pivot
-    else:  # You need to hande the part at the end of the recursion - when you only have one element in your array,
-        # just return the array.
-        return array
+            if x < pivot: less.append(x)
+            if x == pivot: equal.append(x)
+            if x > pivot: greater.append(x)
+        return quick_sort(less) + equal + quick_sort(greater)
+    else: return array
 
 
 def bubble_sort(array):
@@ -126,9 +106,7 @@ def bubble_sort(array):
 
 def shell_sort(array):
     gap = len(array) // 2
-    # loop over the gaps
     while gap > 0:
-        # do the insertion sort
         for i in range(gap, len(array)):
             val = array[i]
             j = i
@@ -144,7 +122,7 @@ def comb_sort(array):
     gap = len(array)
     swaps = True
     while gap > 1 or swaps:
-        gap = max(1, int(gap / 1.25))  # minimum gap is 1
+        gap = max(1, int(gap / 1.25))
         swaps = False
         for i in range(len(array) - gap):
             j = i + gap
@@ -156,12 +134,12 @@ def comb_sort(array):
 
 def counting_sort(array):
     m = max(array) + 1
-    count = [0] * m  # init with zeros
+    count = [0] * m
     for a in array:
-        count[a] += 1  # count occurrences
+        count[a] += 1
     i = 0
-    for a in range(m):  # emit
-        for c in range(count[a]):  # - emit 'count[a]' copies of 'a'
+    for a in range(m):
+        for c in range(count[a]):
             array[i] = a
             i += 1
     return array

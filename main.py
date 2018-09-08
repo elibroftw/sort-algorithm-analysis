@@ -2,8 +2,9 @@ from sorts import *
 from time import time
 import random
 
-func_list = [selection_sort, bubble_sort, comb_sort, counting_sort, heap_sort, insertion_sort, merge_sort, quick_sort,
-             shell_sort]
+# func_list = [selection_sort, bubble_sort, comb_sort, counting_sort, heap_sort, insertion_sort, merge_sort, quick_sort,
+#              shell_sort]
+func_list = [comb_sort, counting_sort, heap_sort, merge_sort, quick_sort, shell_sort]
 
 
 def test_sorts(length):
@@ -40,17 +41,17 @@ def test_sorts(length):
 
 
 def start_test():
-    before = time()
-    test_sorts(100)
-    print('test 1:', time() - before)
-
-    before = time()
-    test_sorts(1000)
-    print('test 2:', time() - before)
-
-    before = time()
-    test_sorts(10000)
-    print('test 3:', time() - before)
+    # before = time()
+    # test_sorts(100)
+    # print('test 1:', time() - before)
+    #
+    # before = time()
+    # test_sorts(1000)
+    # print('test 2:', time() - before)
+    #
+    # before = time()
+    # test_sorts(10000)
+    # print('test 3:', time() - before)
 
     before = time()
     test_sorts(100000)
@@ -62,19 +63,36 @@ def start_test():
 
 
 def calculate_averages():
-    lengths = [100, 1000, 10000]
+    lengths = [100, 1000, 10000, 100000, 1000000]
+    hs = {}
     for func in func_list:
         averages = []
         for length in lengths:
             with open(f'{func.__name__} - {length}.txt') as f:
                 values = [float(value.replace('\n', '')) for value in f.read().split(', ')]
                 averages.append(sum(values) / len(values))
+                hs[func.__name__] = sum(values) / len(values)
         with open(f'{func.__name__} averages.txt', 'w') as f:
-            l = 100
+            length = 100
             for average in averages:
-                f.write(str(l) + ': ' + str(average) + 'seconds \n')
-                l *= 10
+                f.write(str(length) + ': ' + str(average) + ' seconds \n')
+                length *= 10
+    # ranking_score = []
+    # ranking_name = []
+    # for key in hs:
+    #     temp = hs[key]
+    #     i = 0
+    #     if len(ranking_score) == 0:
+    #         ranking_score.append(temp)
+    #         ranking_name.append(key)
+    #     for x in ranking_score:
+    #         if temp < x: break
+    #         i += 1
+    #     ranking_score.insert(i, temp)
+    #     ranking_name.insert(i, key)
+    # print(ranking_name)
+    # print(ranking_score)
 
 
-# start_test()
+start_test()
 calculate_averages()
