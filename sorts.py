@@ -4,7 +4,7 @@ def insertion_sort(array):
         position = i
         while position > 0 and array[position - 1] > current_value:
             array[position] = array[position - 1]
-            position = position - 1
+            position -= 1
         array[position] = current_value
     return array
 

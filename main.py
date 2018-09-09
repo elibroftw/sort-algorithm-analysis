@@ -7,13 +7,13 @@ import random
 func_list = [comb_sort, counting_sort, heap_sort, merge_sort, quick_sort, shell_sort]
 
 
-def test_sorts(length):
+def test_sorts(size):
     random_arrays = []
     trials = {}
     for func in func_list:
         trials[func.__name__] = []
     for i in range(5):
-        random_array = [random.randrange(100000) for _ in range(length)]  # positive integers only!!!
+        random_array = [random.randrange(100000) for _ in range(size)]  # positive integers only!!!
         random_arrays.append(random_array)
         # master_sorted_array = sorted(random_array)  # was used to check if sort was implemented properly
         for func in func_list:
@@ -25,7 +25,7 @@ def test_sorts(length):
                 trials[func.__name__].append(after - before)
             print('done', func.__name__)
         print('done a round')
-    with open(f'array list of length {length}.txt', 'w') as f:
+    with open(f'array list of size {size}.txt', 'w') as f:
         for l in random_arrays:
             for i, number in enumerate(l):
                 if i > 0: f.write(', ')
@@ -33,7 +33,7 @@ def test_sorts(length):
             f.write('\n')
 
     for key in trials:
-        with open(f'{key} - {length}.txt', 'w') as f:
+        with open(f'Data/{key} - {size}.txt', 'w') as f:
             for i, value in enumerate(trials[key]):
                 if i > 0: f.write(', ')
                 f.write(str(value))
@@ -63,35 +63,32 @@ def start_test():
 
 
 def calculate_averages():
-    lengths = [100, 1000, 10000, 100000, 1000000]
+    sizes = [100, 1000, 10000, 100000, 1000000]
     hs = {}
     for func in func_list:
         averages = []
-        for length in lengths:
-            with open(f'{func.__name__} - {length}.txt') as f:
+        for size in sizes:
+            with open(f'Data/{func.__name__} - {size}.txt') as f:
                 values = [float(value.replace('\n', '')) for value in f.read().split(', ')]
                 averages.append(sum(values) / len(values))
                 hs[func.__name__] = sum(values) / len(values)
-        with open(f'{func.__name__} averages.txt', 'w') as f:
-            length = 100
+        with open(f'Averages/{func.__name__} averages.txt', 'w') as f:
+            size = 100
             for average in averages:
-                f.write(str(length) + ': ' + str(average) + ' seconds \n')
-                length *= 10
-    # ranking_score = []
-    # ranking_name = []
-    # for key in hs:
-    #     temp = hs[key]
-    #     i = 0
-    #     if len(ranking_score) == 0:
-    #         ranking_score.append(temp)
-    #         ranking_name.append(key)
-    #     for x in ranking_score:
-    #         if temp < x: break
-    #         i += 1
-    #     ranking_score.insert(i, temp)
-    #     ranking_name.insert(i, key)
-    # print(ranking_name)
-    # print(ranking_score)
+                f.write(str(size) + ': ' + str(average) + ' seconds \n')
+                size *= 10
+
+
+def rank_algorithms(size):
+    important_line = [100, 1000, 10000, 100000, 1000000].index(size)
+    for func in func_list:
+        with open(f'Averages/{func.__name__} averages.txt') as f:
+            a = [_ for _ in f.read().split('\n')]
+            try:
+                line = a[important_line].split(' ')
+                print(func.__name__ + ':', line[1])
+            except IndexError:
+                pass
 
 
 start_test()
